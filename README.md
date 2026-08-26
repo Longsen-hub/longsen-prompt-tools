@@ -5,6 +5,10 @@
 
 ---
 
+🌐 **在线 Demo**：https://longsen-hub.github.io/longsen-prompt-tools/ （图片提示词检索 + 视频逆向示例，真实数据可交互体验）
+
+---
+
 ## 🎬 这是什么
 
 **两个 AI 提示词工程技能，开源给你免费试用：**

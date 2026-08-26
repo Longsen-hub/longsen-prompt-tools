@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>隆森 Prompt 工坊（Longsen Prompt Tools）· 在线 Demo</title>
+<meta name="description" content="隆森 Prompt 工坊：视频→提示词→分镜脚本 + 图片提示词模板库（MIT 开源）——在线体验图片提示词检索与视频逆向拆解示例">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg-deep: #0e1a29;
+    --bg-card: #152238;
+    --bg-card-hover: #1a2a42;
+    --glass-border: rgba(255,255,255,0.08);
+    --glass-highlight: rgba(255,255,255,0.1);
+    --text-primary: #f0f4fa;
+    --text-secondary: rgba(240,244,250,0.66);
+    --text-tertiary: rgba(240,244,250,0.42);
+    --accent: #4FACFE;
+    --accent-strong: #2f8fe0;
+    --accent-soft: rgba(79,172,254,0.14);
+    --gold: #ffcc00;
+    --gold-soft: rgba(255,204,0,0.12);
+    --radius: 14px;
+    --shadow-card: 0 2px 6px rgba(0,0,0,0.35);
+    --transition: 0.2s ease;
+  }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif;
+    background: var(--bg-deep);
+    color: var(--text-primary);
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+    line-height: 1.6;
+  }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { color: var(--accent-strong); }
+  ::-webkit-scrollbar { width: 5px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.12); border-radius: 3px; }
+
+  .container { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
+
+  /* ===== Header ===== */
+  .site-header {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(14,26,41,0.85); backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--glass-border);
+  }
+  .header-inner { display: flex; align-items: center; gap: 14px; padding: 12px 20px; max-width: 1100px; margin: 0 auto; }
+  .brand { display: flex; align-items: center; gap: 10px; }
+  .brand-logo {
+    width: 34px; height: 34px; border-radius: 10px; flex-shrink: 0;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: #fff; display: flex; align-items: center; justify-content: center;
+    font-weight: 800; font-size: 15px;
+  }
+  .brand-name { font-size: 15px; font-weight: 700; letter-spacing: -0.2px; }
+  .brand-sub { font-size: 11px; color: var(--text-tertiary); }
+  .header-nav { display: flex; gap: 18px; margin-left: auto; align-items: center; }
+  .header-nav a { font-size: 13px; color: var(--text-secondary); }
+  .header-nav a:hover { color: var(--text-primary); }
+  .btn-ghost {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 7px 14px; border-radius: 9px; font-size: 13px; font-weight: 600;
+    background: rgba(255,255,255,0.06); border: 1px solid var(--glass-border);
+    color: var(--text-primary); transition: var(--transition); cursor: pointer;
+  }
+  .btn-ghost:hover { background: rgba(255,255,255,0.12); color: var(--text-primary); }
+  .btn-gold {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 9px 18px; border-radius: 10px; font-size: 14px; font-weight: 700;
+    background: var(--gold); color: #0e1a29; border: none; cursor: pointer;
+    transition: var(--transition);
+  }
+  .btn-gold:hover { background: #ffd633; transform: translateY(-1px); }
+
+  /* ===== Hero ===== */
+  .hero { padding: 72px 0 56px; text-align: center; position: relative; }
+  .hero::before {
+    content: ""; position: absolute; inset: 0; pointer-events: none;
+    background:
+      radial-gradient(600px 260px at 20% 0%, rgba(79,172,254,0.12), transparent),
+      radial-gradient(600px 260px at 80% 10%, rgba(118,75,162,0.14), transparent);
+  }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 12px; font-weight: 600; color: var(--accent);
+    background: var(--accent-soft); border: 1px solid rgba(79,172,254,0.3);
+    border-radius: 999px; padding: 5px 14px; margin-bottom: 20px;
+  }
+  .hero h1 { font-size: clamp(30px, 5vw, 46px); font-weight: 800; letter-spacing: -1px; line-height: 1.2; }
+  .hero h1 .grad {
+    background: linear-gradient(90deg, #4FACFE, #a78bfa, #ffcc00);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .hero p.sub { margin: 18px auto 30px; max-width: 640px; font-size: 16px; color: var(--text-secondary); }
+  .hero-cta { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+  .hero-meta { margin-top: 34px; display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+
+  /* ===== Stats ===== */
+  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 14px; padding: 10px 0 30px; }
+  .stat-card {
+    background: var(--bg-card); border: 1px solid var(--glass-border);
+    border-radius: var(--radius); padding: 18px 16px; text-align: center;
+    transition: var(--transition);
+  }
+  .stat-card:hover { background: var(--bg-card-hover); transform: translateY(-2px); }
+  .stat-num { font-size: 26px; font-weight: 800; color: var(--accent); letter-spacing: -0.5px; }
+  .stat-card.gold .stat-num { color: var(--gold); }
+  .stat-lab { font-size: 12px; color: var(--text-tertiary); margin-top: 4px; }
+
+  /* ===== Section ===== */
+  .section { padding: 44px 0; }
+  .section-head { text-align: center; margin-bottom: 34px; }
+  .section-head .kicker { font-size: 12px; font-weight: 700; letter-spacing: 0.14em; color: var(--accent); text-transform: uppercase; }
+  .section-head h2 { font-size: clamp(24px, 3.4vw, 32px); font-weight: 800; letter-spacing: -0.6px; margin-top: 8px; }
+  .section-head p { color: var(--text-secondary); font-size: 14px; margin-top: 10px; }
+
+  /* ===== Skill Cards ===== */
+  .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 18px; }
+  .skill-card {
+    background: var(--bg-card); border: 1px solid var(--glass-border);
+    border-radius: 16px; padding: 26px; position: relative; overflow: hidden;
+    transition: var(--transition);
+  }
+  .skill-card:hover { background: var(--bg-card-hover); transform: translateY(-3px); box-shadow: var(--shadow-card); }
+  .skill-card::after {
+    content: ""; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: linear-gradient(90deg, var(--accent), transparent);
+  }
+  .skill-card.c2::after { background: linear-gradient(90deg, var(--gold), transparent); }
+  .skill-ico { font-size: 30px; }
+  .skill-title { font-size: 19px; font-weight: 800; margin-top: 12px; letter-spacing: -0.3px; }
+  .skill-tag {
+    display: inline-block; font-size: 11px; font-weight: 700; color: var(--accent);
+    background: var(--accent-soft); border-radius: 6px; padding: 3px 9px; margin-top: 8px;
+  }
+  .skill-card.c2 .skill-tag { color: var(--gold); background: var(--gold-soft); }
+  .skill-desc { font-size: 13.5px; color: var(--text-secondary); margin-top: 12px; }
+  .skill-flow { margin-top: 16px; display: flex; align-items: center; gap: 6px; flex-wrap: wrap; font-size: 12px; color: var(--text-tertiary); }
+  .skill-flow .step {
+    background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border);
+    padding: 4px 10px; border-radius: 7px; color: var(--text-secondary);
+  }
+  .skill-flow .arrow { opacity: 0.5; }
+
+  /* ===== Demo Tabs ===== */
+  .demo-box {
+    background: var(--bg-card); border: 1px solid var(--glass-border);
+    border-radius: 18px; overflow: hidden;
+  }
+  .demo-tabs { display: flex; border-bottom: 1px solid var(--glass-border); background: rgba(255,255,255,0.02); }
+  .demo-tab {
+    flex: 1; padding: 15px 18px; font-size: 14px; font-weight: 700; text-align: center;
+    color: var(--text-tertiary); cursor: pointer; transition: var(--transition);
+    border-bottom: 2px solid transparent;
+  }
+  .demo-tab:hover { color: var(--text-primary); }
+  .demo-tab.active { color: var(--accent); border-bottom-color: var(--accent); background: var(--accent-soft); }
+  .demo-panel { display: none; padding: 24px; }
+  .demo-panel.active { display: block; }
+
+  /* search demo */
+  .search-row { display: flex; gap: 10px; margin-bottom: 14px; flex-wrap: wrap; }
+  .search-input {
+    flex: 1; min-width: 220px;
+    background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border);
+    border-radius: 10px; padding: 11px 15px; color: var(--text-primary); font-size: 14px;
+    outline: none; transition: var(--transition);
+  }
+  .search-input:focus { border-color: var(--accent); background: rgba(79,172,254,0.06); }
+  .search-input::placeholder { color: var(--text-tertiary); }
+  .chips { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 18px; }
+  .chip {
+    font-size: 12px; padding: 5px 13px; border-radius: 999px; cursor: pointer;
+    background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border);
+    color: var(--text-secondary); transition: var(--transition);
+  }
+  .chip:hover { color: var(--text-primary); border-color: rgba(255,255,255,0.2); }
+  .chip.active { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); font-weight: 600; }
+  .result-count { font-size: 12px; color: var(--text-tertiary); margin-bottom: 14px; }
+  .result-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 14px; }
+  .result-card {
+    background: rgba(255,255,255,0.03); border: 1px solid var(--glass-border);
+    border-radius: 12px; padding: 16px; transition: var(--transition);
+    display: flex; flex-direction: column; gap: 8px;
+  }
+  .result-card:hover { background: rgba(255,255,255,0.05); }
+  .result-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+  .result-title { font-size: 14px; font-weight: 700; }
+  .result-meta { font-size: 11px; color: var(--text-tertiary); display: flex; gap: 8px; flex-wrap: wrap; }
+  .result-meta .m { background: rgba(255,255,255,0.06); padding: 2px 8px; border-radius: 5px; }
+  .result-prompt {
+    font-size: 12.5px; color: var(--text-secondary); line-height: 1.65;
+    max-height: 0; overflow: hidden; transition: max-height 0.3s ease;
+  }
+  .result-card.open .result-prompt { max-height: 260px; }
+  .result-actions { display: flex; gap: 8px; margin-top: 2px; }
+  .mini-btn {
+    font-size: 12px; padding: 5px 11px; border-radius: 7px; cursor: pointer;
+    background: rgba(255,255,255,0.06); border: 1px solid var(--glass-border); color: var(--text-secondary);
+    transition: var(--transition);
+  }
+  .mini-btn:hover { color: var(--text-primary); background: rgba(255,255,255,0.1); }
+  .mini-btn.primary { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); }
+  .mini-btn.primary:hover { background: rgba(79,172,254,0.25); color: var(--accent); }
+
+  /* video samples */
+  .sample-list { display: flex; flex-direction: column; gap: 14px; }
+  .sample-card {
+    background: rgba(255,255,255,0.03); border: 1px solid var(--glass-border);
+    border-radius: 12px; padding: 18px; transition: var(--transition);
+  }
+  .sample-card:hover { background: rgba(255,255,255,0.05); }
+  .sample-head { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .sample-title { font-size: 15px; font-weight: 700; }
+  .sample-meta { font-size: 11px; color: var(--text-tertiary); display: flex; gap: 8px; }
+  .sample-meta .m { background: rgba(255,255,255,0.06); padding: 2px 8px; border-radius: 5px; }
+  .sample-prompt {
+    margin-top: 12px; font-size: 12.5px; color: var(--text-secondary); line-height: 1.7;
+    background: rgba(0,0,0,0.25); border: 1px solid var(--glass-border);
+    border-radius: 10px; padding: 14px; white-space: pre-wrap; word-break: break-all;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  }
+
+  /* ===== Quick Start ===== */
+  .cmd-block {
+    background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border);
+    border-radius: 12px; padding: 18px 20px; margin: 0 auto 14px; max-width: 720px;
+    text-align: left; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 13px; color: #9fd3ff; overflow-x: auto; line-height: 1.8;
+  }
+  .cmd-block .cm { color: var(--text-tertiary); }
+  .cmd-block .hl { color: var(--gold); }
+
+  /* ===== Footer ===== */
+  .site-footer {
+    border-top: 1px solid var(--glass-border); padding: 34px 0 44px;
+    text-align: center; color: var(--text-tertiary); font-size: 13px;
+  }
+  .site-footer .brand-row { display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 12px; }
+  .site-footer .brand-logo { width: 26px; height: 26px; font-size: 12px; border-radius: 8px; }
+  .site-footer a { color: var(--text-secondary); }
+  .site-footer a:hover { color: var(--text-primary); }
+
+  @media (max-width: 640px) {
+    .header-nav a.nav-link { display: none; }
+    .hero { padding: 52px 0 40px; }
+    .demo-panel { padding: 16px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== Header ===== -->
+<header class="site-header">
+  <div class="header-inner">
+    <div class="brand">
+      <div class="brand-logo">LP</div>
+      <div>
+        <div class="brand-name">隆森 Prompt 工坊</div>
+        <div class="brand-sub">Longsen Prompt Tools · MIT 开源</div>
+      </div>
+    </div>
+    <nav class="header-nav">
+      <a class="nav-link" href="#skills">双技能</a>
+      <a class="nav-link" href="#demo">在线体验</a>
+      <a class="nav-link" href="#start">快速开始</a>
+      <a class="btn-ghost" href="https://github.com/Longsen-hub/longsen-prompt-tools" target="_blank" rel="noopener">GitHub ↗</a>
+    </nav>
+  </div>
+</header>
+
+<!-- ===== Hero ===== -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-badge">🎬 图 + 视频 双提示词能力开源包</div>
+    <h1>视频 → 提示词 → 分镜脚本<br><span class="grad">图片提示词模板库</span></h1>
+    <p class="sub">两个 AI 提示词工程技能，开源免费试用：把任意视频逆向拆成可复现的 10 段式提示词与 12 字段分镜表；一句话需求匹配最佳图片提示词模板。</p>
+    <div class="hero-cta">
+      <a class="btn-gold" href="#demo">🎯 立即在线体验</a>
+      <a class="btn-ghost" href="https://github.com/Longsen-hub/longsen-prompt-tools#%F0%9F%9A%80-%E5%BF%AB%E9%80%9F%E5%BC%80%E5%A7%8B" target="_blank" rel="noopener">📖 查看快速开始</a>
+    </div>
+    <div class="hero-meta">
+      <span class="chip">MIT License</span>
+      <span class="chip">零成本视觉通道</span>
+      <span class="chip">deepfake 责任护栏</span>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Stats ===== -->
+<div class="container">
+  <div class="stats">
+    <div class="stat-card"><div class="stat-num">135</div><div class="stat-lab">行业视频案例提炼</div></div>
+    <div class="stat-card gold"><div class="stat-num">7</div><div class="stat-lab">图片精选包</div></div>
+    <div class="stat-card"><div class="stat-num">200+</div><div class="stat-lab">每条精选包提示词</div></div>
+    <div class="stat-card"><div class="stat-num">10 段式</div><div class="stat-lab">视频提示词结构</div></div>
+    <div class="stat-card gold"><div class="stat-num">12 字段</div><div class="stat-lab">AI 生成向分镜表</div></div>
+    <div class="stat-card"><div class="stat-num">8 类</div><div class="stat-lab">图片提示词场景分类</div></div>
+  </div>
+</div>
+
+<!-- ===== Skills ===== -->
+<section class="section" id="skills">
+  <div class="container">
+    <div class="section-head">
+      <div class="kicker">Skills</div>
+      <h2>两大技能，一条命令跑完</h2>
+      <p>方法源于实战：10 段式提示词结构提炼自 135 个顶级 AI 视频真实案例</p>
+    </div>
+    <div class="skills-grid">
+      <div class="skill-card">
+        <div class="skill-ico">🎬</div>
+        <div class="skill-title">video-prompt-reverse</div>
+        <span class="skill-tag">视频逆向拆解</span>
+        <p class="skill-desc">一段视频 → 10 段式提示词总纲 + 每镜头提示词 + 12 字段分镜表。PySceneDetect 镜头切分 + 本地转写 + 多模态视觉 + LLM 逆向，全自动工具链。</p>
+        <div class="skill-flow">
+          <span class="step">镜头切分</span><span class="arrow">→</span>
+          <span class="step">本地转写</span><span class="arrow">→</span>
+          <span class="step">逐镜头视觉</span><span class="arrow">→</span>
+          <span class="step">10段式逆向</span><span class="arrow">→</span>
+          <span class="step">分镜表</span>
+        </div>
+      </div>
+      <div class="skill-card c2">
+        <div class="skill-ico">🖼️</div>
+        <div class="skill-title">image-prompt-hub</div>
+        <span class="skill-tag">图片提示词检索</span>
+        <p class="skill-desc">一句话需求 → 匹配最佳提示词模板。8 大场景分类（小红书/抖音/淘宝/海报/人像写真/3D手作/手绘风格等），含 7 个精选包，每包 200 条+。</p>
+        <div class="skill-flow">
+          <span class="step">需求输入</span><span class="arrow">→</span>
+          <span class="step">场景匹配</span><span class="arrow">→</span>
+          <span class="step">模板输出</span><span class="arrow">→</span>
+          <span class="step">一键复制</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Demo ===== -->
+<section class="section" id="demo">
+  <div class="container">
+    <div class="section-head">
+      <div class="kicker">Live Demo</div>
+      <h2>在线体验（真实示例数据）</h2>
+      <p>以下展示使用仓库内置示例数据，非静态截图——可直接交互</p>
+    </div>
+    <div class="demo-box">
+      <div class="demo-tabs">
+        <div class="demo-tab active" data-tab="search">🔍 图片提示词检索</div>
+        <div class="demo-tab" data-tab="video">🎬 视频逆向示例</div>
+      </div>
+
+      <!-- Panel 1: search -->
+      <div class="demo-panel active" id="panel-search">
+        <div class="search-row">
+          <input class="search-input" id="searchInput" type="text" placeholder="输入关键词，如：小红书 护肤 / 3D / 拍立得…">
+          <button class="btn-ghost" onclick="resetSearch()">重置</button>
+        </div>
+        <div class="chips" id="sceneChips"></div>
+        <div class="result-count" id="resultCount"></div>
+        <div class="result-list" id="resultList"></div>
+      </div>
+
+      <!-- Panel 2: video -->
+      <div class="demo-panel" id="panel-video">
+        <div class="sample-list" id="sampleList"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Quick Start ===== -->
+<section class="section" id="start">
+  <div class="container">
+    <div class="section-head">
+      <div class="kicker">Quick Start</div>
+      <h2>快速开始</h2>
+      <p>本地一条命令跑通全链路</p>
+    </div>
+    <div class="cmd-block">
+      <span class="cm"># 视频提示词逆向（需免费注册 bigmodel.cn 获取 GLM-4V-Flash key）</span><br>
+      <span class="hl">cd</span> video-prompt-reverse/scripts<br>
+      <span class="hl">export</span> ZHIPU_API_KEY=<span class="cm">"你的智谱key"</span><br>
+      <span class="hl">export</span> LLM_API_KEY=<span class="cm">"你的LLM key"</span><br>
+      <span class="hl">./run_all.sh</span> /path/to/video.mp4 /tmp/vpr_out
+    </div>
+    <div class="cmd-block">
+      <span class="cm"># 图片提示词检索（示例数据）</span><br>
+      <span class="hl">cd</span> image-prompt-hub/scripts<br>
+      <span class="hl">python3 search_demo.py</span> <span class="cm">"小红书 护肤 极简"</span>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Footer ===== -->
+<footer class="site-footer">
+  <div class="container">
+    <div class="brand-row">
+      <div class="brand-logo">LP</div>
+      <span>隆森 Prompt 工坊 · Longsen Prompt Tools</span>
+    </div>
+    <div>
+      <a href="https://github.com/Longsen-hub/longsen-prompt-tools" target="_blank" rel="noopener">GitHub 仓库</a>
+      &nbsp;·&nbsp; MIT License · 由 隆森AI 开源
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ===== 数据：来自仓库真实示例文件 ===== */
+var PROMPTS = [
+  {"id":"img123-1706","title":"拍立得照片出框效果","prompt":"将场景中的角色转化为3D Q版风格，放在一张拍立得照片上，相纸被一只手拿着，照片中的角色正从拍立得照片中走出，呈现出突破二维相片边框、进入二维现实空间的视觉效果。","scene":"生活/场景","style":"","model":"Nanobanna 图像编辑","tags":["character","cartoon","3d","landscape"]},
+  {"id":"img123-1707","title":"小红书护肤种草封面","prompt":"极简护肤台面构图，白色瓶罐错落摆放，晨光从侧窗洒入，柔和阴影，高级质感，小红书种草风封面。","scene":"社媒/种草","style":"极简","model":"通义万相","tags":["beauty","minimal","skincare","xiaohongshu"]},
+  {"id":"img123-1708","title":"抖音带货产品主图","prompt":"产品居中放置，深色渐变背景，顶部高光打亮产品轮廓，底部阴影自然，电商主图风格，突出产品质感与细节。","scene":"电商/带货","style":"商业摄影","model":"通义万相","tags":["product","ecommerce","studio"]},
+  {"id":"img123-1709","title":"国潮海报插画","prompt":"中国风插画海报，祥云与山水元素，红金配色，传统纹样装饰，海报版式居中构图，节日氛围浓厚。","scene":"平面/海报","style":"国潮插画","model":"gpt-image-2","tags":["poster","chinese","illustration","festival"]},
+  {"id":"img123-1710","title":"3D手作盲盒风格","prompt":"潮玩盲盒3D渲染，圆润造型，马卡龙配色，柔光棚拍感，精致细节，手办展示台背景。","scene":"3D/手作","style":"3D渲染","model":"Nanobanna 图像编辑","tags":["3d","toy","cute","render"]},
+  {"id":"img123-1711","title":"人像写真情绪光影","prompt":"胶片感人像写真，暖色侧逆光勾勒面部轮廓，情绪氛围浓厚，颗粒质感，35mm镜头，电影感调色。","scene":"人像/写真","style":"胶片感","model":"gpt-image-2","tags":["portrait","film","warm","cinematic"]},
+  {"id":"img123-1712","title":"手绘水彩风景","prompt":"水彩手绘风景，柔和晕染，留白构图，淡雅色彩，纸面纹理可见，治愈系插画风格。","scene":"手绘/插画","style":"水彩","model":"通义万相","tags":["watercolor","landscape","handdrawn","healing"]},
+  {"id":"img123-1713","title":"淘宝详情页白底图","prompt":"纯白背景产品图，产品居中，四角柔和补光，无阴影或极浅阴影，电商白底图规范，细节清晰。","scene":"电商/带货","style":"白底图","model":"通义万相","tags":["product","whitebg","taobao","clean"]},
+  {"id":"img123-1714","title":"日系小清新生活照","prompt":"日系小清新风格，明亮通透，低饱和色彩，生活化场景，自然光，胶片颗粒，治愈氛围。","scene":"生活/场景","style":"日系清新","model":"gpt-image-2","tags":["japanese","fresh","lifestyle","bright"]}
+];
+
+var SAMPLES = [
+  {"title":"手机自拍护肤 Vlog","scene":"社媒/种草","style":"真实Vlog","prompt":"FORMAT 15s 9:16 手机前置自拍感\nTIMELINE 0-3s 起床涂面霜 3-8s 按摩吸收 8-12s 对比特写 12-15s 微笑收尾\nSPEECH 台词绑动作\nLOCKS No filter No music"},
+  {"title":"产品开箱广告","scene":"电商/带货","style":"商业广告","prompt":"FORMAT 20s 16:9 商业片\nREFERENCES @image1产品属性 @image2人物\nTIMELINE 0-4s 悬念开场 4-12s 开箱特写 12-18s 功能展示 18-20s 价格+CTA\nSPEECH 台词绑物理动作"},
+  {"title":"旅行风景短片","scene":"生活/场景","style":"电影感","prompt":"FORMAT 30s 横屏 电影感\nTIMELINE 0-8s 航拍建立 8-18s 人文特写 18-26s 日落延时 26-30s 收尾\nPHYSICS 粒子/光晕\nLOCKS 4K 色温5500K"},
+  {"title":"穿搭展示口播","scene":"社媒/种草","style":"口播穿搭","prompt":"FORMAT 20s 9:16 口播\nTIMELINE 0-5s 全身展示 5-12s 细节特写 12-18s 搭配讲解 18-20s 引导关注\nSPEECH 台词绑动作 手势引导\nLOCKS 固定机位 自然光"}
+];
+
+/* ===== Tabs ===== */
+document.querySelectorAll('.demo-tab').forEach(function(tab){
+  tab.addEventListener('click', function(){
+    document.querySelectorAll('.demo-tab').forEach(function(t){ t.classList.remove('active'); });
+    document.querySelectorAll('.demo-panel').forEach(function(p){ p.classList.remove('active'); });
+    tab.classList.add('active');
+    document.getElementById('panel-' + tab.dataset.tab).classList.add('active');
+  });
+});
+
+/* ===== Scene chips ===== */
+var scenes = [];
+PROMPTS.forEach(function(p){
+  if(scenes.indexOf(p.scene) === -1) scenes.push(p.scene);
+});
+var activeScene = '全部';
+function renderChips(){
+  var html = '<span class="chip' + (activeScene==='全部'?' active':'') + '" onclick="setScene(\'全部\')">全部</span>';
+  scenes.forEach(function(s){
+    html += '<span class="chip' + (activeScene===s?' active':'') + '" onclick="setScene(\'' + s + '\')">' + s + '</span>';
+  });
+  document.getElementById('sceneChips').innerHTML = html;
+}
+function setScene(s){ activeScene = s; renderChips(); renderResults(); }
+
+/* ===== Search & render ===== */
+function filtered(){
+  var q = (document.getElementById('searchInput').value || '').trim().toLowerCase();
+  return PROMPTS.filter(function(p){
+    if(activeScene !== '全部' && p.scene !== activeScene) return false;
+    if(!q) return true;
+    var hay = (p.title + ' ' + p.prompt + ' ' + p.scene + ' ' + (p.style||'') + ' ' + (p.model||'') + ' ' + (p.tags||[]).join(' ')).toLowerCase();
+    return q.split(/\s+/).every(function(k){ return hay.indexOf(k) !== -1; });
+  });
+}
+function renderResults(){
+  var list = filtered();
+  document.getElementById('resultCount').textContent = '共 ' + list.length + ' 条匹配（示例库共 ' + PROMPTS.length + ' 条）';
+  var html = '';
+  list.forEach(function(p){
+    var meta = '';
+    if(p.scene) meta += '<span class="m">' + p.scene + '</span>';
+    if(p.model) meta += '<span class="m">' + p.model + '</span>';
+    if(p.style) meta += '<span class="m">' + p.style + '</span>';
+    html +=
+      '<div class="result-card" id="card-' + p.id + '">' +
+        '<div class="result-head"><div class="result-title">' + p.title + '</div></div>' +
+        '<div class="result-meta">' + meta + '</div>' +
+        '<div class="result-prompt">' + p.prompt + '</div>' +
+        '<div class="result-actions">' +
+          '<button class="mini-btn primary" onclick="togglePrompt(\'' + p.id + '\')">展开 Prompt</button>' +
+          '<button class="mini-btn" onclick="copyPrompt(\'' + p.id + '\')">复制</button>' +
+        '</div>' +
+      '</div>';
+  });
+  document.getElementById('resultList').innerHTML = html;
+}
+function togglePrompt(id){
+  document.getElementById('card-' + id).classList.toggle('open');
+}
+function copyPrompt(id){
+  var card = document.getElementById('card-' + id);
+  var text = card.querySelector('.result-prompt').textContent;
+  if(navigator.clipboard){ navigator.clipboard.writeText(text); }
+  var btn = card.querySelector('.mini-btn:last-child');
+  btn.textContent = '已复制 ✓';
+  setTimeout(function(){ btn.textContent = '复制'; }, 1200);
+}
+function resetSearch(){
+  document.getElementById('searchInput').value = '';
+  activeScene = '全部';
+  renderChips(); renderResults();
+}
+document.getElementById('searchInput').addEventListener('input', renderResults);
+
+/* ===== Video samples ===== */
+function renderSamples(){
+  var html = '';
+  SAMPLES.forEach(function(s){
+    html +=
+      '<div class="sample-card">' +
+        '<div class="sample-head">' +
+          '<span class="sample-title">' + s.title + '</span>' +
+          '<span class="sample-meta"><span class="m">' + s.scene + '</span><span class="m">' + s.style + '</span></span>' +
+        '</div>' +
+        '<div class="sample-prompt">' + s.prompt + '</div>' +
+      '</div>';
+  });
+  document.getElementById('sampleList').innerHTML = html;
+}
+
+renderChips(); renderResults(); renderSamples();
+</script>
+</body>
+</html>
