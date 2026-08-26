@@ -1,0 +1,32 @@
+[
+ {
+  "title": "手机自拍护肤 Vlog",
+  "prompt": "10段式：FORMAT 15s 9:16 手机前置自拍感 / TIMELINE 0-3s 起床涂面霜 3-8s 按摩吸收 8-12s 对比特写 12-15s 微笑收尾 / SPEECH 台词绑动作 / LOCKS No filter No music",
+  "scene": "社媒/种草",
+  "style": "真实Vlog"
+ },
+ {
+  "title": "产品开箱广告",
+  "prompt": "FORMAT 20s 16:9 商业片 / REFERENCES @image1产品属性 @image2人物 / TIMELINE 0-4s 悬念开场 4-12s 开箱特写 12-18s 功能展示 18-20s 价格+CTA / SPEECH 台词绑物理动作",
+  "scene": "电商/带货",
+  "style": "商业广告"
+ },
+ {
+  "title": "旅行风景短片",
+  "prompt": "FORMAT 30s 横屏 电影感 / TIMELINE 0-8s 航拍建立 8-18s 人文特写 18-26s 日落延时 26-30s 收尾 / PHYSICS 粒子/光晕 / LOCKS 4K 色温5500K",
+  "scene": "生活/场景",
+  "style": "电影感"
+ },
+ {
+  "title": "穿搭展示口播",
+  "prompt": "FORMAT 25s 9:16 / TIMELINE 0-5s 全身展示 5-12s 细节特写 12-20s 搭配讲解 20-25s 转身收尾 / SPEECH 每套穿搭台词绑动作 / CONTINUITY 人物锁定",
+  "scene": "人像/写真",
+  "style": "时尚街拍"
+ },
+ {
+  "title": "产品一致性广告",
+  "prompt": "FORMAT 15s 1:1 / REFERENCES 产品属性锁定 / CONTINUITY 跨镜头产品不变形 / CAMERA LOCK 固定机位+旋转台 / LOCKS No warping No morphing",
+  "scene": "电商/带货",
+  "style": "产品棚拍"
+ }
+]

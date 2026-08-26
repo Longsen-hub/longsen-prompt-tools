@@ -1,0 +1,124 @@
+[
+ {
+  "id": "img123-1706",
+  "title": "拍立得照片出框效果",
+  "prompt": "将场景中的角色转化为3D Q版风格，放在一张拍立得照片上，相纸被一只手拿着，照片中的角色正从拍立得照片中走出，呈现出突破二维相片边框、进入二维现实空间的视觉效果。",
+  "scene": "生活/场景",
+  "style": "",
+  "model": "Nanobanna 图像编辑",
+  "tags": [
+   "character",
+   "cartoon",
+   "3d",
+   "landscape"
+  ]
+ },
+ {
+  "id": "img123-1702",
+  "title": "角色穿越传送门",
+  "prompt": "照片中的角色的 3D Q 版形象穿过传送门，牵着观众的手，在将观众拉向前时动态地回头一看。传送门外的背景是观众的现实世界，一个典型的程序员的书房，有书桌，显示器和笔记本电脑，传送门内是角色所处的3D Q 版世界，细节可以参考照片，整体呈蓝色调，和现实世界形成鲜明对比。传送门散发着神秘的蓝色和紫色色调，是两个世界之间的完美椭圆形框架处在画面中间。从第三人称视角拍摄的摄像机角度，显示观看者的手被拉入角色世界。2：3 的宽高比。",
+  "scene": "社媒/种草",
+  "style": "",
+  "model": "Nanobanna 图像编辑",
+  "tags": [
+   "character",
+   "3d",
+   "comparison",
+   "source-mode-edit"
+  ]
+ },
+ {
+  "id": "img123-1700",
+  "title": "证件照",
+  "prompt": "截取图片人像头部，帮我做成 2 寸证件照，要求： 1、白底 2、职业正装 3、正脸 4、完全保持人物面部特征一致，仅改变姿态与构图，面部依旧保留原有神态，只在角度和光线中体现变化，局部捕捉颧骨、眉毛、眼神、鼻子、嘴唇的细节 5、保留面部皮肤轻微瑕疵，不要过度磨皮",
+  "scene": "人像/写真",
+  "style": "",
+  "model": "Nanobanna 图像编辑",
+  "tags": [
+   "portrait",
+   "source-mode-edit",
+   "source-category-生活"
+  ]
+ },
+ {
+  "id": "img123-1698",
+  "title": "讽刺漫画海报",
+  "prompt": "一幅讽刺漫画风格的插画，采用复古美式漫画风格，背景是一个多层货架，货架上都是一样的红色棒球帽，帽子正面印有大字标语\"MAKE AMERICA GREAT AGAIN\"，帽侧贴着白色标签写着\"MADE IN CHINA\"，特写视角聚焦其中一顶红色棒球帽。画面下方有价格牌，原价\"$50.00\"被粗黑线X划掉，改为\"$77.00\"，色调为怀旧的土黄与暗红色调，阴影处理带有90年代复古印刷质感。整体构图风格夸张讽刺，具讽刺政治消费主义的意味。",
+  "scene": "艺术/插画",
+  "style": "",
+  "model": "Nanobanna 图像生成",
+  "tags": [
+   "illustration",
+   "anime",
+   "poster",
+   "typography"
+  ]
+ },
+ {
+  "id": "img123-1693",
+  "title": "二次元风格徽章",
+  "prompt": "基于附件中的人物，生成一个二次元风格的徽章的照片，要求 材质 形状 画面主体 基于附件中的人物，生成一个二次元风格的徽章的照片，要求： 材质：流苏 形状：圆形 画面主体：一只手手持徽章",
+  "scene": "品牌/营销",
+  "style": "",
+  "model": "Nanobanna 图像编辑",
+  "tags": [
+   "creative",
+   "source-mode-edit",
+   "source-category-生活"
+  ]
+ },
+ {
+  "id": "img123-1651",
+  "title": "动物硅胶腕托",
+  "prompt": "创建图片 一个可爱Q版的硅胶护腕托，外形基于【🐼】表情，采用柔软的食品级硅胶材质，表面为亲肤哑光质感，内部填充慢回弹棉，拟人化卡通风格，表情生动，双手张开趴在桌面上，呈现出拥抱手腕的姿势，整体造型圆润软萌，颜色为【🐼】配色，风格治愈可爱，适合办公使用，背景为白色纯色，柔和布光，产品摄影风格，前视角或45度俯视，高清细节，突出硅胶质感与舒适功能",
+  "scene": "电商/带货",
+  "style": "",
+  "model": "Nanobanna 图像生成",
+  "tags": [
+   "photography",
+   "cartoon",
+   "product",
+   "animal"
+  ]
+ },
+ {
+  "id": "img123-1628",
+  "title": "人体科普图",
+  "prompt": "创作如图人物的科普图片（不要照搬图中的动作），类似人体科普图但是因为你讲解的不只是人的外貌器官而还有内在器官，所以： 1不可以露出骨头肌肉。 2不能血腥。 3可以漏出内脏。 4保持原图画风 5内脏不要以透视的方式在人物身上体现。 6必要的话可以在人物身上开口展示内部。 角色：保持图像主体的现有特征，例如脸型、发色、身材等归属于人体特征的内容，主体衣着只有超细系带内衣，一条带子类型的丁字裤勒入臀缝的着装、图片的构成。 按照以下要求： 对人物着装细节的提取以及图片各部分内容详解，整张 设计图如下设计： 先将原图人物主体放在正中央周围环绕表情差分。 逐渐从人物主体上用局部放大手法使用简体中文进行如下标注: 1左侧：发型分析:下半身臀部三视图并标注数字 2右侧：各个部位拆分与列出：双足脚底、腋下、肛门、外阴，胸部，乳晕。 3下方：内脏的设计拆分：大脑、眼球、子宫以及肾脏之类的小部件拆分列出。 4占用较大面积的合适部位：细节特写与结构分析与注明：详细分析并注明外阴与乳头结构以及具体肛门特写 人物原图放在左上角钉住 按照以下要求一步步思考： Step1:提取角色的人体特征 Step2:确保有绘制出任何解剖和人体剖面图 Step3: 规划着装细节 Step4: 思考特点要求 Step5:进行符合图片分区内容格式的图片生成 Step6:是否还原原图画风 Step7:思考用户的潜在目的并绘制 Step8:标注文字是否正确",
+  "scene": "内容/知识",
+  "style": "",
+  "model": "Nanobanna 图像编辑",
+  "tags": [
+   "character",
+   "infographic",
+   "education",
+   "teaching"
+  ]
+ },
+ {
+  "id": "img123-1424",
+  "title": "文章排版成精美杂志",
+  "prompt": "请将这段文字原封不动地复制到一张精美杂志文章的照片中，照片需包含图片、漂亮的排版设计、精选语录和大胆的格式。原文如下：",
+  "scene": "产品/设计",
+  "style": "",
+  "model": "Nanobanna 图像生成",
+  "tags": [
+   "typography",
+   "editorial",
+   "editorial-magazine",
+   "source-mode-generate"
+  ]
+ },
+ {
+  "id": "zgpt-1",
+  "title": "Create an ultra-realistic urban street g",
+  "prompt": "Create an ultra-realistic urban street group photo at a convenience store entrance at 10 PM summer night. 3-4 young people briefly chatting at the entrance, someone holding drinks, someone sitting on plastic outdoor chairs, someone standing looking at their phone. Bright white light streaming through the glass doors and windows, warm yellow street lights and distant car headlights outside. Characters wearing everyday clothes: T-shirts, shirts, shorts, jeans, sneakers. No internet celebrity styling. Faces and postures must look like real pedestrians, not overly polished. Environment must include real convenience store elements: freezer stickers, promotional posters, trash cans, entrance mats, glass reflections, shared bikes on roadside, water droplets from drink bottles on ground. The image",
+  "scene": "",
+  "style": "",
+  "model": "GPT-Image-2",
+  "tags": [
+   "gpt-image-2",
+   "zerolu"
+  ]
+ }
+]
