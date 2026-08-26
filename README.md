@@ -1,21 +1,22 @@
 # 隆森 Prompt 工坊（Longsen Prompt Tools）
 
-> 视频 → 提示词 → 分镜脚本 ｜ 图片提示词模板库 —— 图+视频双提示词能力开源包
+> 视频 → 提示词 → 分镜脚本 ｜ 图片提示词模板库 ｜ AI 视频案例库 —— 图+视频提示词能力开源包
 > MIT License · 由 隆森AI 开源
 
 ---
 
-🌐 **在线 Demo**：https://longsen-hub.github.io/longsen-prompt-tools/ （图片提示词检索 + 视频逆向示例，真实数据可交互体验）
+🌐 **在线 Demo**：https://longsen-hub.github.io/longsen-prompt-tools/ （图片提示词检索 + 视频逆向示例 + AI 视频案例库，真实数据可交互体验）
 
 ---
 
 ## 🎬 这是什么
 
-**两个 AI 提示词工程技能，开源给你免费试用：**
+**三个 AI 提示词工程技能，开源给你免费试用：**
 
 | 技能 | 能力 | 效果 |
 |:--|:--|:--|
 | **video-prompt-reverse** | 视频逆向拆解 | 一段视频 → 10段式提示词总纲 + 每镜头提示词 + 12字段分镜表 |
+| **ai-video-case-library** | AI 视频案例库 | 135 个真实 AI 视频案例精选 14 条示例，含完整 prompt，检索即复用 |
 | **image-prompt-hub** | 图片提示词检索 | 一句话需求 → 匹配最佳提示词模板（8 场景分类） |
 
 ## ✨ 为什么值得试
@@ -34,6 +35,11 @@ export ZHIPU_API_KEY="你的智谱key"   # 免费：bigmodel.cn 注册
 export LLM_API_KEY="你的LLM key"
 ./run_all.sh /path/to/video.mp4 /tmp/vpr_out
 
+# AI 视频案例检索（示例数据，见 ai-video-case-library/SKILL.md）
+cd ai-video-case-library/scripts
+python3 search_cases.py "vlog 东京"
+python3 search_cases.py --category "UGC & Vlog"
+
 # 图片提示词检索（示例数据，见 image-prompt-hub/SKILL.md）
 cd image-prompt-hub/scripts
 python3 search_demo.py "小红书 护肤 极简"
@@ -48,10 +54,15 @@ longsen-prompt-tools/
 │   ├── references/           # 分镜表模板 / 失败模式清单 / 底座索引
 │   ├── scripts/              # 4 步工具链 + 一键入口
 │   └── examples/             # 示例输出
+├── ai-video-case-library/
+│   ├── SKILL.md              # 技能文档（7 大分类 + 10段式复用）
+│   ├── scripts/              # 案例检索 demo
+│   └── examples/             # 14 条脱敏视频案例示例（完整 prompt）
 ├── image-prompt-hub/
 │   ├── SKILL.md              # 技能文档（分类体系+检索）
 │   ├── scripts/              # 检索 demo
 │   └── examples/             # 示例提示词
+├── index.html                # 在线 Demo 页
 └── LICENSE                   # MIT
 ```
 
